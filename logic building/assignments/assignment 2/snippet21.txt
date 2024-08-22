@@ -1,0 +1,10 @@
+snippet21
+public class Main {
+public static void main(String[] args) {
+System.out.println("Hello, World!");
+// Missing closing brace here
+}
+Main.java:105: error: reached end of file while parsing
+}
+ ^
+java syntax requires all parentheses to be closed to ensure parsing without any error

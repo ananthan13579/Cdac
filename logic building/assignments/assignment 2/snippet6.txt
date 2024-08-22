@@ -1,0 +1,15 @@
+snippet6
+public class Main {
+public static void main(String[] args) {
+int x = y + 10;
+System.out.println(x);
+}
+}
+
+error while compiling
+Main.java:36: error: cannot find symbol
+int x = y + 10;
+        ^
+  symbol:   variable y
+  location: class Main
+Since Java is a statically typed language,all variables must be declared and initialized before they are used in any expression.

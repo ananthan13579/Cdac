@@ -1,0 +1,12 @@
+snippet16
+
+public class Main {
+public static void main(String[] args) {
+int num = 10;
+double result = num / 4;
+System.out.println(result);
+}
+}
+
+code returns with the result as 2.0. this result is expected because a int to double type conversion is possible.
+this happens because there is no loss of precision when going from int datatype to double.

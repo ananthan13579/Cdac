@@ -1,0 +1,26 @@
+snippet9
+
+public class Main {
+public static void main(String[] args) {
+int class = 10;
+System.out.println(class);
+}
+}
+
+compile error occurs
+Main.java:58: error: not a statement
+int class = 10;
+^
+Main.java:58: error: ';' expected
+int class = 10;
+   ^
+Main.java:58: error: <identifier> expected
+int class = 10;
+         ^
+Main.java:59: error: illegal start of expression
+System.out.println(class);
+                   ^
+Main.java:59: error: <identifier> expected
+System.out.println(class);
+In Java, keywords cannot be used as identifiers (such as variable names, method names, class names, etc.) because they are reserved words that have a predefined meaning in the language.
+This is to avoid ambiguity.

@@ -1,0 +1,11 @@
+snippet4
+
+public class Main {
+public static void main() {
+System.out.println("Hello, World!");
+}
+}
+
+error: can't find main(String[]) method in class: Main
+code compiles but there is a runtime error.
+String[] args parameter allows the Java runtime to pass command-line arguments to the application when it starts.
