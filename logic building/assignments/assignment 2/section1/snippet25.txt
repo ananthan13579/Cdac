@@ -1,0 +1,20 @@
+snippet25
+public class Switch {
+public static void main(String[] args) {
+double score = 85.0;
+switch(score) {
+case 100:
+System.out.println("Perfect score!");
+break;
+case 85:
+System.out.println("Great job!");
+break;
+default:
+System.out.println("Keep trying!");
+}
+}
+}
+Switch.java:104: error: selector type double is not allowed
+switch(score)
+
+switch cases allow int type reference as double type can have infinite possibilities of cases.to fix the error use int datatype in a switch reference.
