@@ -1,0 +1,15 @@
+snippet5
+public class Main {
+public static void main(String[] args) {
+System.out.println("Main method with String[] args");
+}
+public static void main(int[] args) {
+System.out.println("Overloaded main method with int[] args");
+}
+}
+
+Code will run without any errors
+output will be "Main method with String[] args"
+Yes, main can have multiple methods, method with argument String[] args will be called
+The overloaded main method with int[] args will not be called automatically. 
+To invoke it,it needs to be called explicitly from within the code.

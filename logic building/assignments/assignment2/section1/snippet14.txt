@@ -1,0 +1,8 @@
+Snippet 14
+
+Main.java:103: error: incompatible types: String cannot be converted to double
+double num = "Hello";
+
+Java enforces type safety to ensure that variables are used consistently with their declared types. 
+This helps catch potential errors at compile-time rather than at runtime, leading to more robust and reliable code.
+It prevents situations where a variable is used in an unintended way, which could lead to unpredictable behavior or runtime errors.

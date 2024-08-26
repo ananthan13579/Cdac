@@ -1,0 +1,13 @@
+snippet8
+
+public class Main {
+public static void main(String[] args) {
+System.out.println("Hello, World!"
+}
+}
+
+compile error
+Main.java:52: error: ')' or ',' expected
+System.out.println("Hello, World!"
+Java's syntax rules require that all parentheses, brackets, and braces be properly closed. 
+When the closing parenthesis is missing, the Java compiler cannot correctly parse the statement, leading to a compilation error.

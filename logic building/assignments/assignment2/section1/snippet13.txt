@@ -1,0 +1,5 @@
+Exception in thread "main" java.lang.NullPointerException: Cannot invoke "String.length()" because "<local1>" is null
+        at Main.main(Main.java:104)
+
+Java runtime throws an exception java.lang.NullPointerException. String length cannot be null
+exception occurs while trying to invoke a method on a 'null' reference.

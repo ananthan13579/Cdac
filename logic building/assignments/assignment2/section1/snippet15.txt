@@ -1,0 +1,15 @@
+snippet15
+public class Main {
+public static void main(String[] args) {
+int num1 = 10;
+double num2 = 5.5;
+int result = num1 + num2;
+System.out.println(result);
+}
+}
+Main.java:105: error: incompatible types: possible lossy conversion from double to int
+int result = num1 + num2;
+
+This results in a compilation error due to a potential loss of precision when converting a double to an int.
+
+It can be avoided by assigning a double datatype to the result for precision.

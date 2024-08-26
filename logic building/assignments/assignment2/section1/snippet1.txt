@@ -1,0 +1,10 @@
+snippet1
+public class Main {
+public void main(String[] args) {
+System.out.println("Hello, World!");
+}
+}
+a2.java:1: error: class Main is public, should be declared in a file named Main.java.
+file name should match public class name.
+
+
