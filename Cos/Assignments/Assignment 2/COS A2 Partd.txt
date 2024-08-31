@@ -1,0 +1,389 @@
+1.What is an operating system, and what are its primary functions?
+
+An operating system is software that manages a computer’s hardware. It
+also provides a basis for application programs and acts as an intermediary/interface
+between the computer user and the computer hardware.
+
+Functions of os
+Resouce mgmt
+Storage mgmt(HDD) file system
+process mgmt(CPU scheduling)
+memory mgmt(RAM)
+
+2.Explain the difference between process and thread.
+3. What is virtual memory, and how does it work?
+4.Describe the difference between multiprogramming, multitasking, and multiprocessing
+5. What is a file system, and what are its components?
+
+A file system is a structure used by an operating system to organise and manage files on a storage device such as a hard drive, 
+solid state drive (SSD), or USB flash drive. It defines how data is stored, accessed, and organised on the storage device. 
+
+File System Structure: The file system structure refers to how the files and directories are organized and stored on the physical storage device. 
+This includes the layout of file systems data structures such as the directory structure, file allocation table, and inodes.
+
+File Allocation: The file allocation mechanism determines how files are allocated on the storage device. 
+This can include allocation techniques such as contiguous allocation, linked allocation, indexed allocation, or a combination of these techniques.
+
+Data Retrieval: The file system implementation determines how the data is read from and written to the physical storage device. 
+This includes strategies such as buffering and caching to optimize file I/O performance.
+Security and Permissions: The file system implementation includes features for managing file security and permissions. 
+This includes access control lists (ACLs), file permissions, and ownership management.
+
+Recovery and Fault Tolerance: The file system implementation includes features for recovering from system failures and maintaining data integrity. 
+This includes techniques such as journaling and file system snapshots.
+ 
+6. What is a deadlock, and how can it be prevented?
+A deadlock is a situation in which more than one process is blocked because it is holding a resource and also requires some resource that is acquired by some other process. 
+Therefore, none of the processes gets executed.
+
+Deadlock Prevention
+This is done by restraining the ways a request can be made. 
+Since deadlock occurs when all the above four conditions are met, we try to prevent any one of them, thus preventing a deadlock.
+
+7. Explain the difference between a kernel and a shell.
+A shell is basically an interface present between the kernel and the user.
+A shell is a CLI (command-line interpreter).
+
+A kernel is the very core of a typical OS.
+A kernel is a type of low-level program that has its interfacing with the hardware on top of which all the applications run (disks, RAM, CPU, etc.).
+
+
+8. What is CPU scheduling, and why is it important?
+CPU Scheduling is a process that allows one process to use the CPU while another process is delayed (in standby) due to unavailability of any resources such as I/O etc, 
+thus making full use of the CPU. 
+The purpose of CPU Scheduling is to make the system more efficient, faster, and fairer.
+
+It decides which task (or process) the CPU should work on at any given time. 
+This is important because a CPU can only handle one task at a time, but there are usually many tasks that need to be processed.
+
+9. How does a system call work?
+The Applications run in an area of memory known as user space. A system call connects to the operating system's kernel, which executes in kernel space. 
+When an application creates a system call, it must first obtain permission from the kernel. 
+It achieves this using an interrupt request, which pauses the current process and transfers control to the kernel.
+
+10. What is the purpose of device drivers in an operating system?
+Device Driver in computing refers to a special kind of software program or a specific type 
+of software application that controls a specific hardware device that enables different hardware devices to communicate with the computer’s Operating System.
+
+11. Explain the role of the page table in virtual memory management.
+A page table is a data structure used by a virtual memory system in a computer to store mappings between virtual addresses and physical addresses. 
+Virtual addresses are used by the program executed by the accessing process, 
+while physical addresses are used by the hardware(RAM).
+
+12. What is thrashing, and how can it be avoided?
+thrashing occurs when a computer's virtual memory resources are overused, leading to a constant state of paging and page faults, inhibiting most application-level processing. 
+It causes the performance of the computer to degrade or collapse.
+Thrashing is when the page fault and swapping happens very frequently at a higher rate, and then the operating system has to spend more time swapping these pages.
+
+Preventing thrashing
+Adjust the swap file size
+Increase the amount of RAM
+Decrease the number of applications running on the computer
+Increasing processes in ready state with long term schedulers
+Replace programs
+
+13. Describe the concept of a semaphore and its use in synchronization.
+Semaphore is an operating system-level memory management technique that can be used to manage the allocation and use of memory resources.
+it allows multiple threads or processes to share access to a limited number of resources, such as memory blocks or locks.
+
+
+14. How does an operating system handle process synchronization?
+
+
+15. What is the purpose of an interrupt in operating systems?
+An interrupt is a signal emitted by hardware or software when a process or an event needs immediate attention. 
+It alerts the processor to a high-priority process requiring interruption of the current working process. 
+
+16. Explain the concept of a file descriptor.
+A file descriptor is a number that uniquely identifies an open file in a computer's operating system. 
+It describes a data resource, and how that resource may be accessed.
+
+17. How does a system recover from a system crash?
+
+18. Describe the difference between a monolithic kernel and a microkernel.
+A monolithic kernel is an operating system kernel in which all the operating system services run in kernel space, meaning they all share the same memory space. 
+This type of kernel is characterized by its tight integration of system services and its high performance.
+
+A microkernel is a type of operating system kernel in which only the most basic services run in kernel space, with other services running in user space. \
+This type of kernel is characterized by its modularity, simplicity, and ability to run multiple operating systems on the same hardware. 
+
+19. What is the difference between internal and external fragmentation?
+Internal fragmentation happens when the memory is split into mounted-sized blocks. Whenever a method is requested for the memory, the mounted-sized block is allotted to the method. 
+In the case where the memory allotted to the method is somewhat larger than the memory requested, 
+then the difference between allotted and requested memory is called internal fragmentation.
+
+External fragmentation happens when there’s a sufficient quantity of area within the memory to satisfy the memory request of a method. 
+However, the process’s memory request cannot be fulfilled because the memory offered is in a non-contiguous manner. 
+Whether you apply a first-fit or best-fit memory allocation strategy it’ll cause external fragmentation. 
+
+20. How does an operating system manage I/O operations?
+The OS manages I/O operations through a component known as the I/O subsystem. 
+The I/O subsystem is designed to provide a uniform interface for any I/O device irrespective of its underlying specifics. 
+It is responsible for monitoring the status of operations, managing buffers and caches, and providing error handling mechanisms.
+The OS also uses interrupt techniques to manage I/O operations. An interrupt is a signal sent to the processor that an event has occurred that needs immediate attention. 
+When an I/O operation is completed, the device sends an interrupt to the processor. 
+The OS then stops its current operations and starts addressing the interrupt. 
+This allows the OS to manage multiple I/O operations simultaneously, improving the overall efficiency of the system.
+
+Buffering is another technique used by the OS to manage I/O operations. 
+A buffer is a temporary storage area in memory where data is held before it is sent to the device. 
+Buffering helps to cope with the speed mismatch between the processor and the I/O devices. 
+It allows the processor to move on to other tasks while the slower I/O operation is still in progress. 
+
+21. Explain the difference between preemptive and non-preemptive scheduling.
+Preemptive scheduling is used when a process switches from the running state to the ready state or from the waiting state to the ready state. 
+The resources (mainly CPU cycles) are allocated to the process for a limited amount of time and then taken away, 
+and the process is again placed back in the ready queue if that process still has CPU burst time remaining. 
+That process stays in the ready queue till it gets its next chance to execute. 
+
+Non-preemptive Scheduling is used when a process terminates, or a process switches from running to the waiting state. 
+In this scheduling, once the resources (CPU cycles) are allocated to a process, the process holds the CPU till it gets terminated or reaches a waiting state. 
+In the case of non-preemptive scheduling does not interrupt a process running CPU in the middle of the execution. 
+
+22. What is round-robin scheduling, and how does it work?
+Round Robin is a CPU scheduling algorithm where each process is cyclically assigned a fixed time slot.
+It is the preemptive version of First come First Serve CPU Scheduling algorithm. 
+Round Robin CPU Algorithm generally focuses on Time Sharing technique. 
+
+23. Describe the priority scheduling algorithm. How is priority assigned to processes?
+In Priority scheduling, there is a priority number assigned to each process. 
+In some systems, the lower the number, the higher the priority. 
+While, in the others, the higher the number, the higher will be the priority. The Process with the higher priority among the available processes is given the CPU.
+
+24. What is the shortest job next (SJN) scheduling algorithm, and when is it used?
+Shortest job next (SJN), also known as shortest job first (SJF) or shortest process next (SPN), 
+is a scheduling policy that selects for execution the waiting process with the smallest execution time. 
+SJN is a non-preemptive algorithm.
+
+25. Explain the concept of multilevel queue scheduling.
+It may happen that processes in the ready queue can be divided into different classes where each class has its own scheduling needs. 
+For example, a common division is a foreground (interactive) process and a background (batch) process. 
+These two classes have different scheduling needs. For this kind of situation, Multilevel Queue Scheduling is used. 
+
+26. What is a process control block (PCB), and what information does it contain?
+A Process Control Block (PCB) is a data structure used by the operating system to manage information about a process. 
+The process control keeps track of many important pieces of information needed to manage processes efficiently. 
+A process control block (PCB) contains information about the process, i.e. registers, quantum, priority, etc. 
+The process table is an array of PCBs, which logically contains a PCB for all of the current processes in the system.
+
+
+27. Describe the process state diagram and the transitions between different process states.
+New State: In this step, the process is about to be created but not yet created. 
+It is the program that is present in secondary memory that will be picked up by the OS to create the process.
+
+Ready State: New -> Ready to run. After the creation of a process, the process enters the ready state i.e. the process is loaded into the main memory. 
+The process here is ready to run and is waiting to get the CPU time for its execution. Processes that are ready for execution by the CPU are maintained in a queue called a ready queue for ready processes.
+Run State: The process is chosen from the ready queue by the OS for execution and the instructions within the process are executed by any one of the available CPU cores.
+Blocked or Wait State: Whenever the process requests access to I/O or needs input from the user or 
+needs access to a critical region(the lock for which is already acquired) it enters the blocked or waits state. 
+The process continues to wait in the main memory and does not require CPU. Once the I/O operation is completed the process goes to the ready state.
+
+Terminated or Completed State: Process is killed as well as PCB is deleted. The resources allocated to the process will be released or deallocated.
+Suspend Ready: Process that was initially in the ready state but was swapped out of main memory(refer to Virtual Memory topic) 
+and placed onto external storage by the scheduler is said to be in suspend ready state. 
+The process will transition back to a ready state whenever the process is again brought onto the main memory.
+Suspend Wait or Suspend Blocked: Similar to suspend ready but uses the process which was performing I/O operation and lack of main memory caused them to move to secondary memory. 
+When work is finished it may go to suspend ready.
+
+CPU and I/O Bound Processes: If the process is intensive in terms of CPU operations, then it is called CPU bound process. 
+Similarly, If the process is intensive in terms of I/O operations then it is called I/O bound process. 
+
+28. How does a process communicate with another process in an operating system?
+There are two modes through which processes can communicate with each other – shared memory and message passing. 
+As the name suggests, the shared memory region shares a shared memory between the processes. 
+On the other hand, the message passing lets processes exchange information through messages.
+
+30. Explain the concept of a zombie process and how it is created.
+A process which has finished the execution but still has entry in the process table to report to its parent process is known as a zombie process. 
+A child process always first becomes a zombie before being removed from the process table. 
+The parent process reads the exit status of the child process which reaps off the child process entry from the process table.
+
+31. Describe the difference between internal fragmentation and external fragmentation.
+Internal fragmentation happens when the memory is split into mounted-sized blocks. Whenever a method is requested for the memory, the mounted-sized block is allotted to the method. 
+In the case where the memory allotted to the method is somewhat larger than the memory requested, 
+then the difference between allotted and requested memory is called internal fragmentation.
+
+External fragmentation happens when there’s a sufficient quantity of area within the memory to satisfy the memory request of a method. 
+However, the process’s memory request cannot be fulfilled because the memory offered is in a non-contiguous manner. 
+Whether you apply a first-fit or best-fit memory allocation strategy it’ll cause external fragmentation. 
+
+32. What is demand paging, and how does it improve memory management efficiency?
+Demand paging is a technique used in virtual memory systems where pages enter main memory only when requested or needed by the CPU. 
+In demand paging, the operating system loads only the necessary pages of a program into memory at runtime, instead of loading the entire program into memory at the start.
+
+33. Explain the role of the page table in virtual memory management.
+Standard page tables serve to map virtual memory to physical memory on a per process basis. 
+Each process has its own page table, so the total amount of virtual memory "available" in the system is 
+proportional to the amount of physical memory times the number of processes currently in the system.
+
+34. How does a memory management unit (MMU) work?
+it is a hardware component whose main purpose is to convert virtual addresses created by the CPU into physical addresses in the computer’s memory. 
+In simple words, it is responsible for memory management In a device as it acts as a bridge between the CPU and the RAM, 
+which ensures that programs can run smoothly and access the required data without clashes or unauthorized access. 
+It is usually integrated in the processor but in some cases it also constructed as a separate Integrated circuit (IC).
+
+35. What is thrashing, and how can it be avoided in virtual memory systems?
+thrashing occurs when a computer's virtual memory resources are overused, leading to a constant state of paging and page faults, inhibiting most application-level processing. 
+It causes the performance of the computer to degrade or collapse.
+Thrashing is when the page fault and swapping happens very frequently at a higher rate, and then the operating system has to spend more time swapping these pages.
+
+Preventing thrashing
+Adjust the swap file size
+Increase the amount of RAM
+Decrease the number of applications running on the computer
+Increasing processes in ready state with long term schedulers
+Replace programs
+
+36. What is a system call, and how does it facilitate communication between user programs and the
+operating system?
+The Applications run in an area of memory known as user space. A system call connects to the operating system's kernel, which executes in kernel space. 
+When an application creates a system call, it must first obtain permission from the kernel. 
+It achieves this using an interrupt request, which pauses the current process and transfers control to the kernel.
+
+37. Describe the difference between a monolithic kernel and a microkernel.
+A monolithic kernel is an operating system kernel in which all the operating system services run in kernel space, meaning they all share the same memory space. 
+This type of kernel is characterized by its tight integration of system services and its high performance.
+
+38. How does an operating system handle I/O operations?
+The OS manages I/O operations through a component known as the I/O subsystem. 
+The I/O subsystem is designed to provide a uniform interface for any I/O device irrespective of its underlying specifics. 
+It is responsible for monitoring the status of operations, managing buffers and caches, and providing error handling mechanisms.
+The OS also uses interrupt techniques to manage I/O operations. An interrupt is a signal sent to the processor that an event has occurred that needs immediate attention. 
+When an I/O operation is completed, the device sends an interrupt to the processor. 
+The OS then stops its current operations and starts addressing the interrupt. 
+This allows the OS to manage multiple I/O operations simultaneously, improving the overall efficiency of the system.
+
+39. Explain the concept of a race condition and how it can be prevented.
+A race condition is an undesirable situation that occurs when a device or system attempts to perform two or more operations at the same time, 
+but because of the nature of the device or system, the operations must be done in the proper sequence to be done correctly.
+
+Two ways programmers can prevent race conditions in operating systems and other software include:
+
+Avoid shared states.
+This means reviewing code to ensure when shared resources are part of a system or process, 
+atomic operations are in place that run independently of other processes and locking is used to enforce the atomic operation of critical sections of code. Immutable objects can also be used that cannot be altered once created.
+Use thread synchronization. 
+Here, a given part of the program can only execute one thread at a time.
+
+Preventing race conditions with other types of technology is also possible
+Storage and memory
+The serialization of memory or storage access will also prevent race conditions. 
+This means if read and write commands are received close together, the read command is executed and completed first by default.
+
+Networking
+In a network, a race condition may occur if two users try to access a channel at the same instant and neither computer receives notification the channel is occupied before the system grants access. 
+Statistically, this kind of situation occurs mostly in networks with long lag times, such as those that use geostationary satellites.
+
+40. Describe the role of device drivers in an operating system.
+Device Driver in computing refers to a special kind of software program or a specific type 
+of software application that controls a specific hardware device that enables different hardware devices to communicate with the computer’s Operating System.
+
+41. What is a zombie process, and how does it occur? How can a zombie process be prevented?
+A process which has finished the execution but still has entry in the process table to report to its parent process is known as a zombie process. 
+A child process always first becomes a zombie before being removed from the process table. 
+The parent process reads the exit status of the child process which reaps off the child process entry from the process table.
+
+42. Explain the concept of an orphan process. How does an operating system handle orphan processes?
+A process whose parent process no more exists i.e. either finished or terminated without waiting for its child process to terminate is called an orphan process.
+The OS assigns these Orphan processes to the init process, which periodically performs a wait operation to eliminate any zombie processes.
+
+43. What is the relationship between a parent process and a child process in the context of process
+management?
+A parent process is a process that creates another process, known as a child process. 
+When a parent process creates a child process, it passes some data or instructions to the child process. 
+The parent process can also monitor and control the child process's behaviour, including terminating it if necessary.
+
+Parent processes are an important concept in operating systems, 
+as they enable the creation of new processes and the coordination of multiple processes. 
+The relationship between parent and child processes can be visualized as a tree structure, 
+with the parent process at the top of the tree and the child processes branching out below it.
+
+In some operating systems, such as Unix and Linux, the parent-child relationship between processes is established through a system call called "fork." 
+When a parent process calls fork, it creates a copy of itself, which becomes the child process. 
+The child process inherits some of the parent process's properties, such as its memory and file descriptors. 
+The child process can then execute a different program using the "exec" system call.
+
+44. How does the fork() system call work in creating a new process in Unix-like operating systems?
+In some operating systems, such as Unix and Linux, the parent-child relationship between processes is established through a system call called "fork." 
+When a parent process calls fork, it creates a copy of itself, which becomes the child process. 
+The child process inherits some of the parent process's properties, such as its memory and file descriptors. 
+The child process can then execute a different program using the "exec" system call.
+
+45. Describe how a parent process can wait for a child process to finish execution.
+A call to wait() blocks the calling process until one of its child processes exits or a signal is received. 
+After the child process terminates, parent continues its execution after wait system call instruction. 
+Child process may terminate due to any of these: 
+
+It calls exit();
+It returns (an int) from main
+It receives a signal (from the OS or another process) whose default action is to terminate.
+
+46. What is the significance of the exit status of a child process in the wait() system call?
+Some operating systems issue a signal (SIGCHLD) to the parent process when a child process terminates, 
+notifying the parent process and allowing it to retrieve the child process's exit status. 
+The exit status returned by a child process typically indicates whether the process terminated normally or abnormally.
+
+47. How can a parent process terminate a child process in Unix-like operating systems?
+
+
+48. Explain the difference between a process group and a session in Unix-like operating systems.
+Among other things, a process group is used to control the distribution of a signal; when a signal is directed to a process group, 
+the signal is delivered to each process that is a member of the group
+
+Similarly, a session denotes a collection of one or more process groups. 
+A process may not create a process group that belongs to another session; 
+furthermore, a process is not permitted to join a process group that is a member of another session—that is, a process is not permitted to migrate from one session to another.
+
+49. Describe how the exec() family of functions is used to replace the current process image with a new one.
+The exec family of functions shall replace the current process image with a new process image. The new image shall be constructed from a regular, executable file called the new process image file. 
+There shall be no return from a successful exec, because the calling process image is overlaid by the new process image.
+
+50.What is the purpose of the waitpid() system call in process management? How does it differ from wait()?
+waitpid() suspends the calling process until a child process ends or is stopped. 
+waitpid() suspends the calling process until the system gets status information on the child. 
+If the system already has status information on an appropriate child when waitpid() is called, waitpid() returns immediately.
+waitpid() allows one to wait for a specific PID (process ID) or to check on child process status with specific flags (such as WNOHANG … 
+to check and not “wait” but immediately return with a return code indicating whether the status was modified … whether there were any exited child processes to report on
+
+wait() will “wait” for any child of the current process to exit(or reap some arbitrary status from among those child processes which have already exited prior to the system call).
+
+
+51. How does process termination occur in Unix-like operating systems?
+In Unix this is done by the fork system call, which creates a child process, and the exit system call, which terminates the current process.
+
+52. What is the role of the long-term scheduler in the process scheduling hierarchy? How does it influence the degree of multiprogramming in an operating system?
+It selects processes from the pool (or the secondary memory) and then maintains them in the primary memory’s ready queue.
+The Multiprogramming degree is mostly controlled by the Long-Term Scheduler. 
+The goal of the Long-Term scheduler is to select the best mix of IO and CPU bound processes from the pool of jobs.
+
+53. How does the short-term scheduler differ from the long-term and medium-term schedulers in terms of frequency of execution and the scope of its decisions?
+Long-Term Scheduler: It is a type of job scheduler.
+Its speed is relatively slower than the Short-Term scheduler.
+A Long-Term Scheduler helps in controlling the degree of multiprogramming.
+Almost non-existent time sharing system
+Selects processes from the pool and loads them into the memory for execution.
+
+Short-Term Scheduler: It is a type of CPU scheduler.
+It is the fastest among the three.
+The Short-Term Scheduler has less control over the degree of multiprogramming.
+minimal time sharing
+Selects those processes that are ready for execution.
+
+Medium term scheduler
+Its speed lies between the Long and Short-Term schedulers.
+Medium-Term Scheduler reduces the degree of multiprogramming.
+time sharing system
+Can re-introduce a process into memory and continue its execution.
+
+
+54. Describe a scenario where the medium-term scheduler would be invoked and explain how it helps manage system resources more efficiently.
+
+The long-term execution of processes in a computer system is managed by a medium-term scheduler, also referred to as a mid-term scheduler. 
+Based on a set of predetermined criteria and priorities, this kind of scheduler decides which processes should be executed next.
+
+Typically, processes that are blocked or waiting must be managed by the medium-term scheduler. 
+These processes are not running right now, but they are still awaiting the occurrence of an event in order to start running. 
+Which of these blocked processes should be unblocked and allowed to continue running is up to the medium-term scheduler to decide.
+
+The system’s overall resource utilization must be managed via the medium-term scheduler. 
+This entails keeping track of how much memory, CPU, and other resources are being used by the various processes and modifying resource allocation as needed.
