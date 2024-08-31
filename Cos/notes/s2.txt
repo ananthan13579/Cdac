@@ -1,0 +1,41 @@
+chown change ownership of file
+su to change user from current to specified user
+cat display content of file on console
+head to display top n lines
+tail display bottom n lines 
+sudo to give some specific privilege to users other than root
+
+system calls
+file related calls Read() Write() Delete() Open() Close() Create()
+process related calls New() Fork() Running() Wait() Exit()
+device related calls ioctl Read()
+info related getpid gettime sysdata
+communication related wait signal status
+
+process: info/code/data which help the processor execute the user task
+code segment:compiled code or instructions to be executed
+data segment: data reqd for execution
+info related:metadata abt system variables or system which help in process execution
+memory: heap and stack
+
+PRocess control block
+process life cycle
+new state, ready state(ready queue),running state-processor running the process,terminated state,wait state.
+process schedulers
+lts(long term), mts,sts,
+
+scheduling algorithms
+1.preemptive
+2.non  preemptive
+
+arrival time:time at which process arrives in ready queue/ready state
+burst time:time taken for process to get executed on CPU
+completion time: time at which process completes
+total arrival time(TAT):CT-AT
+wait time:TAT-BT
+
+first come first serve(non preemptive)
+shortest job first(preemptive and non preemptive)
+round robin (with time quantum)
+priority scheduling algorithm
+

@@ -1,0 +1,53 @@
+memory mgmt
+memory of computer systems can be divided into blocks of fixed or variable size
+known as fixed size partitioning(usually size like 2bytes/4bytes) & variable size partioning
+fsp:process which gets the memory may be small or equal to partioning block size.
+as process size may be smaller than block it lead to internal fragmentation.
+
+vsp:
+
+
+fork()
+produces a child process
+if n fork() processes
+2^n total process, 1 parent 2^n - 1 child process
+read orphan processes, zombie processes
+
+paging
+dividing the process into fixed sized pages
+instead of loading the whole process on os which cant be loaded into main memory os loads few pages of process into main memory acc to frames available
+and other pages loaded from storage device on demand of cpu
+hardware reqd for paging(virtual memory + physical memory +cache)
+paging table: special table maintained by mmu(memory mgmt unit) to map logical address of demanded page with physical address of pagein main memory where page is actually placed
+demand paging
+if page is loaded in memory frame as per demand of cpu, it is demand paging
+page faults- error that occurs when cpu demands a page which is not in main memory
+page replacement algorithms
+optimal page replacement algorithms
+multi level paging/2 level paging
+
+Deadlock
+condition where os cannot continue the execution because of processes demanding those resources that are held by other processes 
+none of the processes can continue their execution hence deadlock occurs
+
+necessary conditions for deadlock to occur
+processes must be mutually exlusive
+no preemption
+hold n wait: processes allowed to make request for resources while holding one.
+circular wait: while holding and waiting for resources there should be a circular wait
+
+deadlock handling techniques
+deadlock avoidance/ignorance
+deadlock prevention
+prevent above deadlock conditions
+deadlock recovery
+kill a process
+add multiple instances of resources
+resource allocation graph
+
+starvation: bounded wait
+deadlock :infinite wait
+
+process synchronization 
+allowing process to work on or access(read/write) to a resource(memory) one by one 
+process synchronization is the only solution to resolve producer-consumer problem

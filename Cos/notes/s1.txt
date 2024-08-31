@@ -1,0 +1,45 @@
+What is os?
+-hardware manager: manages all resources/components of computer
+-process manager: supervises all the tasks/processes being executed by processor.
+
+How is it different from other applications?
+-os is installed over hard drive.
+-applications also installed over hardware under the layer of os.
+-os runs over computer system, applications run over os.
+instruction flow: user->application software->os->kernel->hardware
+
+Operating system
+manages the hardware of computer 
+interface between hardware and software
+manages, processes, converts all inputs to o/p with the help of hardware
+hardware executes all the code.
+os is hardware dependent. os is itself a software, it is always installed on some storage
+as os is software, it require physical memory for execution.inputs intermediate processes output all require hardware.
+os may produce certain intermediate results which need to be stored in,say register and cache.
+speed of register is almost similar to speed of processor.
+os installed on hardware(hardware dependent), applications installedd on os.
+
+
+functions:mgmt of processes,memory,device,disk,network,security
+
+kernel of an operating system is responsible for managing and executing programs
+user and system calls:interrupts and system calls
+memory hierarchy:primary-ram(sram,dram),rom(prom,eeprom,eprom),secondary-hdd,magnetic disk,usb pendrive,cd,floppy
+types of os:batch, multiprogramming,multiprocessor,distributed,desktop, server
+
+Intro to linux
+-open source os ie available for free and modified by user acc to their needs
+-low cost/ no cost, secure, possible to multitask, secure, stable and scalable, networking, cli command line interface,gui graphic unit interface,better file system
+/ is root directory
+/bin user binaries||/sbin system binaries||/etc configuration files||/dev device files||/proc process info||/var variable files||/tmp temporary files||/usr user programs
+/home parent directory of user friendly directory||/boot boot loader files||/opt apps||/lib system libraries
+
+nano-open an existing file/ creating a file.runs nano editor and open specified file.
+date: display date and time in linux.
+ls:list out all files of pwd
+ls -l
+touch to create a new file
+mkdir: create new directory
+chmod change mod: change permissions||rm remove file
+ps: list all currently running processes
+pwd: print working directory
