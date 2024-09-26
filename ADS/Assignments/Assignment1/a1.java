@@ -33,10 +33,11 @@ return false;
         }	
 }
 static int q3(int n){
+//q3 calculate factorial	
 if(n==0){       
 return 1;
    }
-return n*q3(n-1);
+return n*q3(n-1);// n factorial is n*factorial(n-1) so creating recursive function
 //time complexity O(n)
 //space complexity O(n) recursive stack space
 }
@@ -73,6 +74,8 @@ static void q6(){
 }
 static ArrayList<?> q7(String s){
 //find all repeated characters in string
+// storing all characters of the string with the occurences as a key value pair ,
+//if value of corresponding key is >1 then include in list 
 Map<Character,Integer> m=new HashMap<>();
 for(int i=0;i<s.length();i++){
 //char c = s.charAt(i);
@@ -114,6 +117,7 @@ return -1;
 }
 static boolean q9(int n){
 //Check if an integer is a palindrome
+// use toString method to convert to a string then use 2 pointers to check equality of characters. 
 String s=Integer.toString(n);
 int i=0;
 int j=s.length()-1;
