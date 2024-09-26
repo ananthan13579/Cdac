@@ -2,6 +2,8 @@ import java.util.*;
 public class a1{
  static boolean q1(int num) {
 //q1 check armstrong number 
+// convert int to string then get length for number of digits then check if 
+// sum is equal to each digit raised to the power of number of digits
 int k = String.valueOf(num).length();
 int sum = 0;
 int n = num;
