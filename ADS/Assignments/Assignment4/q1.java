@@ -13,6 +13,7 @@ this.next = null;   // Initialize next as null since it's the end of the list
 	}
 }
 public class q1 {
+protected Node head;
 public static void printll(Node head){
 	while(head!=null){
 		System.out.print(head.data+" ");
