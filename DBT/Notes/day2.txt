@@ -1,0 +1,173 @@
+
+MySQL Developer Bundle for Windows
+
+INSTALLING
+
+Open the downloaded zip bundle by double clicking it in Windows
+Explorer. This opens a directory containing zip files for the included
+MySQL products.
+
+Before proceeding to install, we generally recommend referring to
+detailed installation and configuration instructions for each product,
+available from https://dev.mysql.com/doc/
+
+INCLUDED PRODUCTS
+
+mysql-commercial: The MySQL Server software delivers a very fast,
+multi-threaded, multi-user, and robust SQL (Structured Query Language)
+database server. This package includes the MySQL server binary as well
+as related utilities to run and administer a MySQL server.
+
+mysql-commercial-backup: MySQL Enterprise Backup provides DBAs with a
+high-performance, online “hot” backup solution with data compression
+technology to ensure your data is protected in case of downtime or an
+outage.
+
+mysql-connector-c++-commercial: A C++ interface for communicating with
+MySQL servers. The Connector/C++ X DevAPI can also be used by C
+applications.
+
+mysql-connector-j-commercial: MySQL Connector/J is the official JDBC
+driver for MySQL. MySQL provides connectivity for client applications
+developed in the Java programming language with MySQL Connector/J, a
+driver that implements the Java Database Connectivity (JDBC) API.
+
+mysql-connector-net-commercial: Connector/NET is a fully-managed ADO.NET
+driver for MySQL.
+
+mysql-connector-odbc-commercial: Connector/ODBC is a standardized
+database driver for Windows, Linux, Mac OS X, and Unix platforms.
+mysql-connector-odbc driver comes in 2 flavours - ANSI and Unicode.
+
+mysql-connector-python-commercial: MySQL Connector/Python enables Python
+programs to access MySQL databases, using an API that is compliant with
+the Python DB API version 2.0. It is written in pure Python and does not
+have any dependencies except for the Python Standard Library. This is
+the Python 3 version of the driver.
+
+mysql-router-commercial: MySQL Router is lightweight middleware that
+provides transparent routing between your application and any backend
+MySQL Servers. It can be used for a wide variety of use cases, such as
+providing high availability and scalability by effectively routing
+database traffic to appropriate backend MySQL Servers.
+
+mysql-shell-commercial: The MySQL Shell is an interactive Javascript,
+Python, or SQL interface supporting development and administration for
+the MySQL Server and is a component of the MySQL Server. Users can use
+the MySQL Shell to perform data queries and updates as well as various
+administration operations.
+
+4 subdivisions of sql
+ddl(data defn language(create,drop,alter))
+dml(data manipulation language(insert,update,delete))
+dcl(data control language(grant,revoke))
+dql(data query language(select))
+------------------------------------------------------
+extra 5th component of mysql/oracle(not ansi standard)
+dtl/tcl(data transaction language/transaction control language)
+(commit,rollback,savepoint)
+ddl(rename,truncate)
+------------------------------------------------------
+extra in oracle rdbms only
+dml(merge,upsert) total 16 commands
+
+Rules of tablename
+max 30 characters, (A-Z,a-z,0-9,$,#,_), case sensitive in linux,unix
+has to begin with A-Z,a-z
+to use reserved characters(#) in tablename and columnname, enclose in ` `
+reserved words(134) not allowed in tablename
+
+mysql-datatypes
+char
+allows any character, A-Z,a-z,0-9 max 255 characters
+fixed length,wastage of hd space
+searching & retrieval is fast
+default width 1
+
+varchar
+allows any character, A-Z,a-z,0-9 max 65535 characters 64kb-1
+variable length. conserves hd space
+searching & retrieval is comparatively slow
+no default width; has to be specified
+
+longtext
+allows any character A-Z.a-z,0-9
+max 4,294,967,295 characters 4gb-1
+eg feedback comments, remarks, post
+stored outside the table/row.stored away from the table/away from the row
+mysql maintains a locator(hd pointer) from longtext column to longtext data
+performance of other columns in table is not affected 
+not used for those columns that are only for storage and display purposes
+width does not have to be specified
+eg feedback longtext
+variable length
+
+binary 
+fixed length binary string
+max upto 255 bytes of binary data
+eg barcodes qrcodes,picturecodes,signatures,fingerprints,
+width need not be specified
+
+
+varbinary
+variable length binary strength 65535 bytes 64kb-1
+icons,gifs with sound, thumbnail
+no default width; has to be specified
+
+BOTH OF THE ABOVE ARE STORED AS CHARACTER STRINGS OF 0'S AND 1'S
+
+blob(binary large object)
+
+
+longblob
+max upto 4,294,967,295, bytes of binary data 4gb-1
+eg photographs, charts, graphs, maps, sound, music, videos
+eg photograph longblob
+stored outside the table outisde the row away from table away from the row
+mysql maintains a locator(hd pointer) from longblob column to longblob data
+performance of other columns in table is not affected 
+not used for those columns that are only for storage and display purposes
+width does not have to be specified
+
+integer types(exact value)
+signed or unsigned by default it is signed
+tinyint(1B), smallint(2B), mediumint(3B),int(4B),bigint(8B)
+
+floating point types(approx value)
+float(7 decimals,),double(15 decimals)
+
+fixed point types(exact value)
+decimal(double as string)
+used when imp to preserve exact precision for eg with monetary data
+ 
+boolean 
+logical datatypes stores true and false
+eg marital status 
+
+date and time datatypes
+date 1jan 1000ad to 31dec 9999ad no problem of y2k in mysql
+yyyy-mm-dd
+1970 is known as year of epoch
+date1-date2-> returns number of days between 2 dates
+1 jan 1000ad-->1
+2 jan 1000ad-->2
+3 jan 1000ad-->3
+9 oct 2024--> 1657218 num of days since 1 jan 1000ad 
+internally stored as a number num of days since 1jan 1000ad, 7 bytes storage
+
+time 
+hh:mm:ss or hhh:mm:ss
+time values may range from -838:59:59 to +838:59:59
+time1-time2
+
+datetime 
+date & time stored together yyyy-mm-dd hh:mm:ss default format in mysql
+1jan 1000ad 00:00:00 to 9999-12-31 23:59:59
+
+year
+1901 to 2155
+
+in mysql
+max 4096 columns per table provided row size <=65535 rows 
+no limit on number of rows provided table size <=64tb
+amazon orders table-largest table -->100tb daily

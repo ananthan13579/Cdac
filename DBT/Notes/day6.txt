@@ -1,0 +1,301 @@
+new emp table
+empno	ename	sal	 deptno	job	mgr "m is manager c is clerk"
+1	    arun 	8000	1	m	4   "this data in db server hdd"
+2		ali		7000	1	c	1
+3		kiran	3000	1	c	1
+4		jack	9000	2	m	
+5		thomas	8000	2	c	4
+
+dept
+deptno deptname loc
+1      training mumbai
+2      export   delhi
+3      mkting   kolkata
+
+select dname,sum(sal) from emp,dept
+where dept.deptno=emp.deptno
+group by dname; returns table with dname and sum(sal)
+
+select dname,sum(sal) from emp,dept
+group by deptno; returns table with deptno and sum(sal);
+
+select dname,sum(sal) from emp,dept
+where dept.deptno=emp.deptno
+group by dname
+having sum(sal)>10000
+order by 1; returns table with dname and sum(sal)>10000 
+
+
+TYPES OF JOINS
+1.equijoin- join based on equality condition
+* shows matching rows of both the tables
+* uses a. dname,ename b. cnname,sname
+*most frequently used join .AKA natural join.used >90%.
+dept->driving table
+ename->driven table
+					<<----------
+select dname,ename from emp,dept
+where dept.deptno=emp.deptno;
+DNAME ENAME
+----- -----
+
+2.Inequijoin(non-equijoin)
+* join based on ineqality condition
+* shows non matching rows of both the tables. used in exception reports. employees who dont belong in training. customers who havent made the payment
+select dname,ename from emp,dept
+where dept.deptno!=emp.deptno;
+DNAME ENAME
+----- -----
+
+3.Outerjoin
+* join with (+) sign or if you use the keyword "Outer" shows matching rows of both the tables plus non matching rows of outer table
+* outer table-> table which is on outer side of (+) sign
+* outer table-> table which is on opposite side of (+) sign
+* uses -master child report-> parent child report-
+*internally uses do-while loop
+* half outer join(1 dowhile loop, 1 loop for loop)
+*full outer join(nested do while loop)
+select dname,ename from emp,dept
+where dept.deptno=emp.deptno(+);(right outerjoin)emp table is dependent on dept, emp table is child table(details table),dept table is master table/parent table
+DNAME ENAME
+----- -----
+will show marketing with a null ename because of + in where condition
+select dname,ename from emp,dept
+where dept.deptno(+)=emp.deptno;(left outerjoin)outer loop in dowhile is dept, inner loop is emp
+DNAME ENAME
+----- -----
+FULL OUTER JOIN-UNION OF 2 SELECT STATEMENTS-shows matching rows of both tables+non matching rows of both tables
+----------------------------------------------------
+ansi syntax for full outerjoin 
+select dname,ename from emp full outer join dept
+on (dept.deptno=emp.deptno);
+----------------------------------------------------
+ansi syntax for left outerjoin 
+select dname,ename from emp left outer join dept
+on (dept.deptno=emp.deptno);
+----------------------------------------------------
+ansi syntax for right outerjoin 
+select dname,ename from emp right outer join dept
+on (dept.deptno=emp.deptno);
+----------------------------------------------------
+select dname,ename from emp,dept
+where dept.deptno=emp.deptno(+)
+Union
+select dname,ename from emp,dept
+where dept.deptno(+)=emp.deptno;
+
+(+) is not supported by mysql only in other rdbms
+ansi syntax for left/right is supported by mysql.full outer join is not supported
+by default every join is inner join; putting (+) sign or using the keyword "outer" is what makes it an outerjoin
+DO NOT MENTION IN INTERVIEWS UNLESS EXPLICITLY ASKED.
+
+4.Cartesian join
+*join without a WHERE clause
+* every row of driving table combines with each row of driven table
+select dname,ename from emp,dept;same output, faster
+select dname,ename from dept,emp;slower. driving table should have lesser number of rows.lesser io between server hdd and server ram, faster will the program become
+emp has 5 rows, dept has 3 rows; output will be 15 rows
+
+
+
+5.Self join
+*joining a table to itself
+* used when parent column and child column, both are present in same table. slowest join(based on recursion). uses-- 1.ename,mgrname
+
+select a.ename, b.ename from emp b, emp ali
+where a.mgr=b.empno;
+
+*cartesian join is the fastest join, because there is no WHERE clause, and therefore there is no searching involved
+
+ALL EXAMPLES UNTIL NOW,WE JOINED 2 TABLES.BUT IT IS POSSIBLE TO JOIN ANY NUMBER OF TABLES.
+
+depthead	
+deptno 	dhead
+1	    arun 
+2	    jack
+deptno column is common in dept,depthead and emp table.to get ename,dname,dhead, will need to join all the 3 tables
+select dname,ename,dhead from emp,dept,depthead(5 rows,3rows,2rows)
+where depthead.deptno=dept.dept.deptno
+and dept.deptno=emp.deptno;
+dname   ename  dhead
+-----   -----  ------
+Types of Relationships between tables
+1:1,Many:1(emp:depthead),1:Many(depthead:emp),Many:Many()
+1:1--> 1 dept has 1 depthad(in this case) or Depthead:dept
+1:many--> dept:emp and depthead:emp
+
+	Projects			
+Projno		client_name		Desc					empno
+p1		    deloitte		capital gains service   1;3;5
+p2		    ms		        asset mgmt service      2;3;4
+p3		    bnp paribas		macros                  etc
+p4		    icici bank 		pps 
+p5		    amfi		    webdev
+
+
+projects_emp table
+proj_no  emp
+p1        1
+p1        2
+p1        4     
+p2        1
+p2        5
+p3        2
+p3        4    this table is called intersection table. to be used for many:many relationships
+select client_name,ename from projects_emp,emp,projects
+where projects_emp.projno=projects.projno
+and projects_emp.empno=projects.empno
+order by 1,2;
+
+sub query->nested query
+select ename from emp  <<<------------main query(parent)(outer)
+where sal=(select min(sal) from emp);<<----sub query(child)(inner)
+max upto 255 levels for subqueries
+*more the number of select statements. join is faster than subqueries because when you write a join, solve the problem using 1 select statement,with subqueries, 2 or more select statements required.
+
+2nd largest salary
+select max(sal) from emp
+where sal<(select max(sal) from emp);
+
+display all the rows which belong to same dept no as thomas
+select * from emp
+where deptno=(select deptno from emp
+where ename='thomas');
+
+select * from emp 
+where job=(select job from emp
+where ename='kiran');
+
+delete from emp
+where deptno=(
+select deptno from emp
+where ename='Thomas');
+
+update emp set sal=10000
+where job=(
+select job from emp
+where ename='Thomas');
+
+update and delete subqueries will NOT WORK IN MYSQL ONLY IN OTHER RDBMS.in mysql you cannot update or delte from a table from which you are currently selecting
+
+delete from emp
+where deptno=(
+(select abcd.deptno from
+(select deptno from emp
+where ename='Thomas') abcd);(creates temporary table in server ram )
+
+
+update emp set sal=10000
+where deptno=(
+(select pqr.deptno from
+(select deptno from emp
+where ename='Thomas') pqr);
+
+Multi Row subqueries(sub query returns multiple rows)
+select * from emp
+where sal=any(
+select sal from emp 
+where job='M'); gives all the rows where job is a manager 
+
+select * from emp
+where sal in(
+select sal from emp 
+where job='M'); 
+
+To make subqueries work faster, try to solve the problem using join because join is faster than subqueries
+or try to reduce the number of levels for subqueries, fewer the select statements, faster it will be, OR try to reduce the number of rows returned by the subqueries
+assumption-> 3rd row sal is 13000
+select * from emp
+where sal>all(
+select sal from emp
+where job='n'); 
+
+select * from emp
+where sal>(
+select sal from emp
+where job='n'); 
+
+ALL->logical AND, ANY->logical OR, IN-> logical OR
+display all the rows who a receiving a sal>ALL the managers
+Assumption 3rd row sal is 3000
+
+select deptno,sum(sal) from emp,dept
+group by deptno
+having sum(sal)=(
+select max(sum_sal) from 
+(select sum(sal) sum_sal from emp
+group by deptno) abcd);
+
+select sum(sal) sum_sal from emp;
+group by deptno;
+sum_sal
+-------
+18000
+17000
+
+select max(sum_sal) from 
+(select sum(sal) sum_sal from emp
+group by deptno) abcd);
+max(sum_sal)
+------------
+18000
+
+INLINE view- subqueries in the FROM clause. display the dname that is having max(sum(sal))
+
+select dname,sum(sal) from emp,dept
+where dept.deptno=emp.deptno
+group by dname
+having sum(sal)=(
+select max(sum_sal)) from 
+(select sum(sal) sum_sal from emp
+group by deptno) abcd);
+
+Correlated sub-query(using the EXISTS operator)
+*this is the exception when sub-query is faster than join
+*if you have a join along with distinct, to make it work faster, use correlated sub-query(use EXISTS operator)
+DISPLAY THE DNAMES THAT CONTAIN EMPLOYEES;
+
+select deptno from emp;
+1
+1
+1
+2
+2
+select distinct deptno from emp;
+1
+2
+
+select dname from dept
+where deptno not in 
+(select distinct deptno from ep);
+
+select dname from dept
+where deptno in 
+(select distinct deptno from ep);SOLUTION 1
+
+SOLUTION 2
+select dname from emp,dept
+where dept.deptno=emp.deptno;
+trn
+trn
+exp
+exp
+
+select distinct dname from emp,dept
+where dept.deptno=emp.deptno;
+
+SOLUTION 3
+select dname from dept where exists
+(select deptno from emp
+where dept.deptno=emp.deptno);
+EXPLANATION -> does not do a full table scan of driven table, instead breaks the loop after finding the first occurence of a required value
+for exp,trn-->TRUE, for mktg-->FALSE
+
+*first the main query is executed.for every row returned by main query,it will run the sub-query once.subquery in turn returns boolean TRUE or FALSE value.if subquery returns TRUE,main query is
+eventually executed for that row, if subquery returns FALSE value, main query is not executed for that row
+unlike earlier, we don't use distinct here and therefore no sorting takes place in server RAM; this speeds it up.unlike traditional join, number of full table scans is reduced.
+
+this further speeds it up.
+
+OPPOSITE OF EXISTS- NOT EXISTS 
+mktg

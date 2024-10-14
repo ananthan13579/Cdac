@@ -1,0 +1,152 @@
+select * from emp;
+cl scr;
+select job from emp;
+select distinct job from emp; suppress duplicates
+whenever distinct is used, sorting takes place internally
+if large number of rows in table,select statement will be slow
+select distinct job,ename from emp;
+distinct will work on combination of all columns present in select statement
+select deptno,job,ename from emp;
+in a dbms, data is stored inside a file,inside files, rows stored sequentially. in dbms,conept of row numbering. in rdbms table is not file,every row is a file 
+rows are not stored sequentially/in any specific order, they are scattered/fragmented in server hdd
+in multi user environment, when multiple users inserting rows int the same table simultaneously
+if mysql were to store rows sequentially, insert would be very slow
+when u insert a table,mysql finds free space in db server hdd ,it will store the row there
+when u select from table, searching is sequential 
+when u select from a table order depends on row address: always in ascending order of row address
+once u insert a row, row address is constant but when u update a row, if row length increases and free space not available
+then entire row is moved to some other address on the db server hdd.
+only in the case of varchar, row length may increase/decerease
+hence; not possible to see first n rows of a table or the last n rows
+common for all rdbms
+
+
+there is a system table which stores all the tablenames and their respective row addresses
+when u select from a table, MySQL will not search the entire db server hdd;it will go to that system table, and retrieve the rows of SELECTed table accordingly
+
+ORDER BY clause- sorting. asc,desc(descending)
+no upper limit on number of columns in ORDER BY clause- if u have large num of rows in table, and large number of columns in ORDER BY, then SELECT statement will be slow,
+sorting has to take place in server RAM
+select deptno,ename, sal,hiredate from emp
+where deptno=10
+order by ename
+WHERE clause to be used before ORDER BY clause. WHERE clause used to retrieve the rows from server HDD/RAM, searching and to restric the rows
+ORDER BY clause sorting takes place. ORDER BY clause is the last clause in select statement
+
+
+
+select ename, sal*12 annual from emp
+order by annual;
+order by 2;
+
+select * from emp 
+where ename > 'a' and ename <'b';
+blank padded comparison semantics-comparing 2 strings with diff lengths,shorted string padded with blank spaces on rhs such that lengths become equal.then start comparison character
+by character based on ascii value
+where ename>='a' and ename <c;
+where ename like 'A%'; special operator(LIKE) (starting with letter A) % is called wildcard
+
+select * from emp 
+where ename='A%';
+
+select * from emp
+where ename like '%A' ending with A%
+
+select * from emp
+where ename like '%A' contains A
+
+select * from emp
+where ename like '%A' not starting with A
+
+select * from emp
+where ename like '_ _A%'; A is third letter
+
+select * from emp
+where ename like '_I_ _' ;I is second letter
+
+select * from emp
+where ename like '_ _ _ _';
+
+select * from emp
+where ename like '_I%'; second letter I  
+
+select * from emp
+where sal>=2000 and sal<=3000;
+
+select * from emp
+where sal between 2000 and 3000; inclusive 
+
+select * from emp
+where sal between 2000 and 3000; exclusive
+
+select * from emp
+where ename between 'A' and 'F'; 
+
+select * from emp
+where deptno =any(10,20,30); operator overloading
+
+select * from emp
+where deptno in(10,20,30) both same output, dept no 10 20 30 displayed
+
+IN,ANY-> logical OR (use IN for equality, use ANY use for < > ,relational is most powerful,ANY is faster, IN is fastest)
+
+select * from emp
+where deptn not in (10,20,30)
+
+select * from emp
+where deptno =(can use < > >= <= here also)any(10,20,30); 
+
+IN is faster(only equality/inequality), ANY is more powerful(any relational)
+if more complex reqs use logical and relational operators
+ddl->create,drop
+dml-> insert,update,delete
+dql-> select
+
+update
+--------
+update emp 
+set sal=100000
+where empno=1
+
+update emp
+set sal=sal*1.4
+where empno=1;
+
+update emp
+set sal=sal*1.4, city='pune'
+where city='mumbai';
+
+can update multiple rows and columns simultaneously using single command but only update 1 table
+to update 2 or more tables, separate update command is needed for each table
+
+DELETE
+------------
+delete from emp
+where empno=1;
+
+drop table emp; no WHERE clause with DROP table
+commit will save all dml changes since last committed state
+commit;
+commit work; work is optional in mysql
+when user issues a commit, its called as end of transaction
+commit will make the transaction permanent
+total work done=sum of work in individual transactions
+commmit makes a transaction permanent
+when to issue the commit is decided by end user and dependent on logical scope of work
+
+rollback-opposite of commit. what is committed cannot be rolled back.only DML commands are affected by commit and rollback-opposite
+any ddl command automatically commits.not only will it commit itself,it will commit all DML changes before it.when you exit from sql, system automatically commits
+any kind of power failure ,network failure system failure pc reboot,window close improper exit from sql etc; last uncommitted transaction is automatically rolled back
+
+SAVEPOINT
+point within your work. similar to a bookmark. similar to a milestone within a transaction.can rollback to a savepoint.cannot commit to a savepoint
+commit will save all the dml changes since the last committed state, when your rollback or commit, intermediate savepoints are cleared. if you want to use them again. then you will have to reissue them in some new work
+rollback to pqr;
+or 
+rollback work to pqr;
+*work is optional in mysql.you can only rollback sequentially. within a transaction, you can have 2 savepoints with the same name. 
+latest savepoint supercedes the previous one, older savepoint no longer exists
+
+environment setting 
+set commit=1
+set commit=0;

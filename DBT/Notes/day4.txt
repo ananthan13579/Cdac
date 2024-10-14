@@ -1,0 +1,151 @@
+when you select from a table, you can only see committed data of all users+ changes made by you
+
+ACID Properties in RDBMS
+
+atomicity--> the entire transaction takes place at once or it doesnt happen at all(eg- withdraw rs 500 from bank account)
+
+consistency- db must be consistent before and after the transaction(eg same as above,deposits and balance table)
+
+isolation-multiple transactions occur independently without interference(eg) 
+
+durability-once a commit is made, it is permanent,even if later the system failure occurs
+----------------------------------------------------
+PROJECT GUIDLINES:-
+*  Those columns that are likely to have a large number of nulls,
+its recommended that preferably they should be specified at the 
+end of the table structure, to conserve on HD space.
+*  All the insert statement should be in this format:-
+insert into table_name(col1, col2, col3, ....)
+values(val1, val2, val3,.....);
+*  its recommended that you should always use
+double quotes, the select statement becomes more Readable
+*  Make multi user project
+*  Have at least one Indian language.
+*Every table created will have 2 extra columns, whenever a user enters a row, both those rows will store the date and time and which user inserted the data
+*have 6 extra columns in every table, username, datetime when row was inserted, datetime when row was updates. user(),sysdate(),now()
+-----------------------------------------------------
+
+Optimistic locking/ Automatic row locking mechanism in MySQL
+when you UPDATE or DELETE a row, that row is locked automatically for other users. Row locking in MySQL is automatic. When you update or delete a row, that row becomes read only for other users. 
+Other users can select from that table;they will view the old data before your changes. Other users can INSERT/DELETE/UPDATE other rows from that table. No other user can delete your locked row
+till you have issues a rollback or commit. LOCKS are automatically released when you rollback or commit.
+
+Pessimistic locking
+Lock the rows manually in advance BEFORE issuing UPDATE or DELETE
+to lock the rows manually. you have to use SELECT statement with FOR UPDATE clause
+
+select * from emp for update; LOCKS ARE AUTOMATICALLY RELEASED WHEN THERE IS A ROLLBACK OR COMMIT
+
+select * from emp
+where deptno=10
+for update nowait ;
+
+select * from emp
+where deptno=10
+for update wait 30; if row is available,lock it.else wait in request queue for specified time period.if row is still unavailable then abort the operation.
+
+MySQL - SQL - Functions
+Character functions
+1.concat- concatenate(to join)
+select concat(fname, lname ) from emp; joins first name and last name
+select concat((fname,' '),lname) from emp; max upto 255 levels for function within function(limit of sql can be exceeded with help of views)
+uses--> for presentation purposes
+2.update emp set fname= upper(fname); converts all to uppercase
+3.select lower(fname) from emp; converts all to lowercase
+4.select lpad(ename,25,' ' ) from emp; padded with blank spaces such that total space is 25. right justified name
+uses- right justification, cheque printing
+5. select rpad(ename, 25,'*') from emp; uses left justified,converts varchar to char, cheque printin
+6.select lpad(rpad(ename,25,'*'),30,*,);
+7.initcap--> implements initial uppercase
+--------------------------------------------------------
+PROBLEMS
+implement initcap of ename in sql
+
+for centre justified- assume name amit, 80 characters
+38*AMIT38*
+
+display a name with vowels removed
+run-->rn
+
+spell out a salary column upto 5million
+
+0.75 days-> convert to hours,minutes,seconds
+----------------------------------------------------------
+
+8.select ltrim(ename) from emp;uses a.left justification
+9. select rtrim(ename) from emp; a.right justification b. convert char to varchar
+10.select trim(ename) from emp; removes blank spaces from both sides in mysql
+11.select substr(ename,3) from emp; 3 from starting position. eg amit.3rd letter is m so display will be mt;
+select substr('new mumbai',3);mumbai printed
+substr used to extract a part of the string.
+12. select replace(ename,'un','xy') from emp; run becomes rxy
+13.encryption/decryption
+14.select instr(ename,'un') from emp; returns the starting position
+
+new emp table
+ename
+arun
+bannerjee
+charlie
+
+15.select length(ename) from emp; returns length(4,9,7 from above table)
+16.select ascii(ename) from dual; returns ascii value of first letter
+select ascii(substr(ename,2)) from emp; ascii value of second letter 
+select ascii('z') from emp; ascii of z 3 times(3 names in emp table)
+select distinct ascii('z') from emp; ascii of z once only
+select ascii('z') from dual;dual is a system table,automatically created when installing mysql, dual only contains 1 row and 1 column.dual is a dummy table.it is common for all rdbms. 
+
+select substr('new mumbai',1,3) from dual;
+select 3*12 from dual; 
+select 'welcome to cdac mumbai' as "message" from dual;
+select char(65) from dual;  set of characters from keyboard is called character set.utf-8 character set for US english, else default is binary character set  
+
+17. select * from emp
+where soundex(ename)=soundex('aruun'); not an accurate function,works for simple names 
+
+NUMBER FUNCTIONS
+emp table
+Salary(float column)
+1234.567
+1875.019
+1352.615
+1748.156
+1.select round(sal) from emp; rounds off to nearest whole number
+select round(sal,1) from emp; 1 decimal digit
+select round(sal,-2) from emp; adds 2 decimal digits
+2.select truncate(sal,1) from emp; ...uses--- age calculation,time calculation
+select truncate(sal,-1) from emp
+3.select ceil(sal) from emp; returns ceiling of sal. used in bill payments
+select floor(sal) from emp; removes decimal of sal and returns floor value. 
+4.select sign(-15) from dual; temparature check,sign of blood grp,sensex,time difference, 
+5.select mod(9,5) from dual;works with float values also
+6.select sqrt(81) from dual;  returns square root only works with positive number
+7.select power(10,3) from dual; returns exponentiation
+8.select abs(-10) from dual;
+9.sin(x),cos(x),tan(x), x is in radians, 10.ln(y),log(n,m) is logn(m) n base made
+
+DATETIME FUNCTIONS AND FORMATS
+HIREDATE
+2023-10-15
+2023-12-31
+2023-01-15
+1. date time datetime year   2. 1jan 1000d to 31st dec 9999ad 3.no problem of y2k
+4. -838:59:59 to 838:59:59   5.yyyy-mm-dd is default          6.yyyy-mm-dd or yy-mm-dd
+7.1970 is year of epoch      8.00:00:00(12am is midnight)     9. date occupies 7 bytes of storage
+
+1.select sysdate() from dual; returns db server date and time
+2.select now() from dual; returns db server data and time WHEN STATEMENT BEGAN TO EXECUTE
+select sysdate(),now(),sleep(10),sysdate,now() from dual 
+uses: sysdate for date and time displays, now() to maintain logs of users and operations
+3.select addate(sysdate(),1) from dual; adds 24hrs. -1 to reduce 24 hrs
+4.select datediff(sysdate(),hiredate) from emp;
+5.select date_add(hiredate,interval 2month) from emp; argument can be -2 month, 1 year, -1 year
+6.select last_day(hiredate) from emp; last day of the month. this function present only present in mysql and oracle
+uses attendance calc, interest calc 
+
+select last_day(2024-10-11) from dual;
+7.select dayname(sysdate()) from dual; day of the week(initcap)
+select substr(dayname(sysdate()),1,3) from dual;
+select addtime ('2010-01-15 10:00:00','1') from dual; 
+select addtime ('2010-01-15 10:00:00','-1') from dual; 
+select addtime ('2010-01-15 10:00:00','1:30:45') from dual; 11:30:45 time changes
