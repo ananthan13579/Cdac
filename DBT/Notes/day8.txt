@@ -1,0 +1,189 @@
+MySQL - SQL - ALTER TABLE (DDL Command)
+	emp			
+empno		ename		sal
+101			Scott		5000
+102			King		6000
+* rename a table * add a column to the table *drop a column *increase width of column
+indirectly * reduce width of column * change the datatype * copy the rows from one table into another table *copy a table(for testing purposes)
+*copy ONLY the structure of the rows *change position of columns in table structure(because of null values because of storage considerations)
+
+MySQL enterprise backup(export and import)  
+
+select count(*)-count(empno),select count(*)-count(sal),select count(*)-count(ename)-> number of null values
+select * from emp<<---- NOT RECOMMENDED
+select empno,ename,sal from emp;<<<<----- RECOMMENDED
+insert into emp values(...); <<---NOT RECOMMENDED
+insert into emp(empno,ename,sal) values(...);<<<---RECOMMENDED
+
+RENAME A TABLE
+rename table emp to employees; rename ddl command(extra command in MySQL)
+
+ADD COLUMN TO A TABLE
+alter table emp add gst float; adds gst column. by default added at the end of the structure/last column,full of null values
+alter table emp drop column gst;
+alter table emp modify ename varchar(30); changes width of datatype to varchar(30)
+alter table emp modify ename varchar(20); *data will get truncated
+in ORACLE, you can reduce the width provided the contents are null
+alter table emp modify ename varchar(20); <<--ERROR in ORACLE
+
+alter table emp add x varchar(25);
+update emp set x=ename, ename=null;
+alter table emp modify ename varchar(20);
+/* data testing with X column; check that none of the names> 20 chars */ 
+update emp set ename=x;
+alter table drop column x; *recommended to use above solution for MySQL *RECOMMENDED-every table should have extra columns(extension columns) they are used to extend the column(for future reqs)
+
+int(11) --> char(20) *changing the datatype --> alter table modify empno char(20);
+copy rows from 1 table to another->> insert into emp_kh select * from emp_jh; subquery with insert statement. above cmd will work provided structure of both tables is the same.
+* to copy specific rows only, insert into emp_kh select * from emp_jh where deptno=1;
+
+copy a table(for testing purposes) 
+create table emp2 as select * from emp; it will create table emp2, then SELECT statement will be executed
+*when you CREATE table using subquery indexes on original table are not copied into the new table, you will have to create them manually 
+
+create table emp2 as select empno, ename from emp where ...;
+
+COPY ONLY THE STRUCTURE OF THE TABLE -> create table emp2 as select * from emp; delete from emp2; commit;
+SOLUTION 2: create table emp2 as select * from emp; truncate table emp2; truncate is a DDL command TRUNCATE will DELETE all the rows and commit;
+
+delete 
+*common for all rdbms *DELETE is ansi SQL & therefore ansi/iso standard *dml command *requires commit, rollback possible *WHERE clause is supported, can delete specific rows only
+delete from emp;
+commit; suppose it is 1000mb. this space is not deallocated; it is not made available for other tables and users; emp will retain 1000mb 
+drop table emp; <<<----this will DROP the table emp and it will deallocate the 1000mb hd space. 
+to RETAIN emp table<<--- create table emp ...; emp table will start with 0bytes
+*DELETE triggers on table will execute 
+truncate
+*extra command in mysql and oracle. *not ansi SQL & therefore not ansi/iso standard *ddl command *autocommit, rollback not possible * WHERE clause is not supported,deletes all rows and commit
+truncate table emp; <<--- this will DELETE all the rows and COMMIT and it will deallocate the free 1000mb hdd space 
+*DELETE triggers on table will not execute because TRUNCATE is not a DML command
+
+SOLUTION 3: create table emp2 as select * from emp where 1=2;
+
+REname a column: create table emp2 as select empno,ename, sal salary from emp
+drop table emp 
+rename table emp2 to emp; 
+change the position of table structures <<-- create table emp2 as select ename, sal, empno from emp; drop table emp; rename table emp2 to emp;
+
+CONSTRAINTS
+		emp				
+empno	 ename		sal		deptno *limitations/restrictions imposed on a table 
+1			a		5000		1  *PRIMARY KEy- key is another word for column. it is a column or set of columns that uniquely identifies a row
+2			a		6000		1  * duplicate values are not allowed: it has to be unique. null values are not allowed; this is a mandatory column
+3			c		7000		1  * its recommended that each table shd have a pk; it helps from long-term pov.with help of pk, you can distinguish between 2 rows of a table.
+4			d		9000		2  * text and blob cannot be a primary key;
+5			e		8000		2  *unique index is automatically created for primary key column. Composite pk-> combine 2 or more columns together to serve the purpose of pk;
+preferably they should be interdependent columns. In MySQL you can combine upto 32 columns in a composite pk.if you have a composite pk, then a composite unique index is automatically created.
+only 1 pk per table. CANDIDATE KEY<-- is a definition not a constraint. it is a pk in waiting.besides pk, any other column in table that could serve the purpose of pk, is a good candidate for pk-
+select * from emp where empno=1; guaranteed that SELECT statement will return only 1 row
+STEPS FOR IDENTIFYING PRIMARY KEY--> 1.identify some key column and make it pk of table 2. if you cannot identify some key column then implement composite pk 
+3. if this is also not possible, add an extra column to the table to serve the purpose of primary key.this extra column is known as surrogate key.sk is not a constraint,it is a definition.
+RECOMMENDED- primary key is the best column for seaching, with char datatype searching and retrieval is very fast; for sk, CHAR datatype is recommended 
+
+create table(empno char(4) primary key,ename varchar(25),sal float,deptno int); all constraints are at server level; can perform dml operations using any frontend s/w(MySQL cli,workbench, java etc)
+cannot break the constraints, constraints will always be valid(feature is called data integrity)
+
+select * from information_schema.table_constraints;
+select * from information_schema.table_constraints where table_schema='cdacmumbai';
+select * from information_schema.key_column_usage
+where table_name ='emp' ;
+ 
+show indexes from emp;
+to drop pk constraint: "alter table emp drop primary key;"
+to add pk to add existing table: "alter table emp add primary key(empno);"
+to change pk column: we have to drop the existing Primary key & alter table & then we can add new primary key 
+
+COMPOSITE PRIMARY KEY: create table(empno char(4) primary key,ename varchar(25),sal float,deptno int,primary key(deptno,empno));<--composite pk
+select * from information_schema.table_constraints; 
+alter table emp drop primary key;
+alter table emp add primary key(deptno,empno);
+
+contraints are of 2 types a.column level constraints-->constraint specified in 1 column 
+b.table level constraints--> composite,specified on combination of 2 or more columns, has to be specified at end of table structure
+
+NOT NULL constraint -> null values not allowed, mandatory column, user has to enter a non null value, but duplicates are allowed.unlike pk, can have multiple notnull constraints. 
+not null is a column level constraint.
+
+entity integrity -> pk, referential integrity -> foreign key, domain integrity -> datatype eg int ,char(10). in MySQL nullability is part of datatype 
+to see not null columns: desc emp;
+
+remove not null constraint: alter table emp modify ename varchar(25) null;
+add not null constraint to existing table: alter table emp modify ename varchar(25) not null; 
+
+UNIQUE *duplicate values not allowed *null values allowed(multiple nulls allowed) *unique index is automatically created 
+*text and blob cant be unique * in MySQL can combine upto 32 columns in a composite unique *can have multiple unique constraint but only 1 pk allowed
+create table emp(empno char(4),ename varchar(25),sal float,deptno int, mob_no char(15) unique,unique(deptno,empno)); mobile num column lvl constraint, deptno,empno table level constraint
+
+select * from information_schema.table_constraints;  
+select * from information_schema.table_constraints
+where table_schema='cdacmumbai';
+
+select * from information_schema.key_column_usage
+where table_name='emp';
+
+show indexes from emp;
+
+unique constraint is also an index so to drop it;
+drop index mob_no on emp;  
+drop index deptno on emp;
+
+to add unique constraint to existing table
+alter table emp add constraint u_emp_mob_no unique(mob_no);
+constraint u_emp_mob_no -> constraint constraintname(it is optional)
+
+create table emp(       * column level constraint can be specified at table level(end of table structure) but table level composite constraint can neber be specified at column level
+empno char(4),       *most devs prefer this, it makes the create table command more readable. except for null constraint which is always a column level constraint and there syntax will not support 
+ename varchar(25),    you from specifiying it at table level
+sal float,           * 1 column can have more than one constraint eg pk and fk, notnull and unique etc
+deptno int,
+mob_no char(15),
+unique(deptno, empno),
+unique(mob_no));  
+
+Solution for candidate key notnull constraint+unique constraint OR not null constraint+unique index
+*with help of above logic, indirectly you can have multiple primary keys in the table; one directly, the remaining indirectly
+
+empno ename sal  deptno panno ppno * ALTERNATE KEY- not a constraint, it is a definition. for candidate key column, if you give it a notnull constraint+unique index/constraint
+1     a     5000                     it becomes alternate to primary. such a primary key is known as primary key 
+2     b     6000                   *SUPERKEY- not a constraint, it is a defn. if 1 or more alternate keys in table, then pk column is AKA super key
+3     c     7000
+4     d     9000
+5     e     8000
+
+FOREIGN KEY
+emp                                dept             *foreign column(coming/derived from elsewhere)
+-----------------------------      -----------------*column or set of column that references a column or set of columns of some table. fk constraint is specified on child column not parent column
+empno  ename sal    depno mgr      depno  dname loc *parent column has to be pk or unique(prerequisite for fk) *foreign key will allow duplicates. fk may reference column of same table also
+1      a     5000   1     1        1      trn   bby *this is called self referencing.(parent column and child column both present in same table)
+2      b     6000   1     1        2      exp   dlh *in current table mgr can be child column and child table empno as parent column(it must be pk)
+3      c     7000   1     1        3      mktg  cal
+4      d     9000   2     2
+5      e     8000   2     2
+6      f     9000   2     2
+
+
+create table dept(        create table emp(
+deptno int primary key,   empno char(4) ename varchar(25),
+dname varchar(15),        sal float, deptno int,
+loc varchar(10));         mgr char(4)
+                          constraint fk_emp_deptno foreign key(deptno)   <<- on update cascade -> if you update parent rows, MySQL will automatically update child rows automatically
+						  references dept(deptno) on delete cascade on update cascade,       <<-- on delete cascade - if parent row is deleted, then MySQL will delete child rows automatically
+						  constraint fk_emp_mgr foreign key(mgr)  constraint fk_emp_mgr-> optional constraint
+						  references dept(empno));  constraint fk_emp_deptno-> optional constraintname
+select * from information_schema.table_constraints;
+select * from information_schema.table_constraints
+where table_name='cdacmumbai'; info abt particular table
+select * from information_schema.key_column_usage
+where table_name='emp'; info abt columns
+alter table drop foreign key fk_emp_deptno;
+alter table add foreign key(deptno) references dept(deptno);
+
+To disable the foreign key constraint temporarily:
+for current connection:
+set foreign_key_checks = 0; disable the foreign key constraint. to enable it afterwards set the value to 1
+
+for all connections: set global_foreign_key_checks = 0; 0-> disable, 1-> enable
+first it inserts, then checks for constraint; and it will allow. constraint is deferred post insert
+first it inserts, then checks for constraint then rollback and give an error. RECOMMENDED -> avoid deleting parent rows for self referenced columns
+delete from emp where empno=1;  *avoid on delete cascade in event of self referencing. you may delete more rows than expected 
+						  

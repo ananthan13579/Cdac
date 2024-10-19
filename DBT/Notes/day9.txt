@@ -1,0 +1,149 @@
+Constraints
+5.Check constraint -> used for validations(used for checking purposes). eg -> sal<10000, age>25. 
+
+
+create table emp(                         
+empno int auto_increment primary key,              *by default AUTO_INCREMENT starts with 1, increments by 1,             
+ename varchar(25) check ename=upper(ename),        User HAS to enter the name in uppercase
+sal float default 7000                              *default is not a constraint, default is a clause that you can use with create table. if nothing specified, it will take default value.
+check(sal between 5001 and 2999999),      <<-- column level check constraint
+deptno int reference dept(deptno), 
+status char(1) default 'T'
+check(status in ('T','P','R')),      T-> temporary, P-> permanent, R-> retired. column level check constraint
+comm float not null,
+mob_no char(15) unique,                           
+check(sal+comm< 5000000)                            table level check constraint
+);
+
+
+*DEFAULT is not a constraint. to make use of DEFAULT value and AUTO_INCREMENT, use the following INSERT statement. upper limit of AUTO_INCREMENT is 
+insert into emp(ename, deptno, comm, mob_no)
+values(.....................................); relational operators, logical operators, arithmetic operators, special operators etc, BETWEEN,IN, LIKE etc, can call single-row functions
+
+insert into emp(ename, deptno, comm, mob_no) *ROLLBACK & COMMIT have no effect on AUTO_INCREMENT(it has been designed on purpose keeping in view a multi-user environment)
+insert into emp(ename, sal) values('A',5000);* to avoid the problem of missing numbers:- do not issue INSERT statements to db at the time of data entry; when user does data entry, you store the 
+insert into emp(ename,sal) values('B',6000);   rows in an array. when user issues a commit, you issue the INSERT statements to the database followed by COMMIT
+insert into emp(ename,sal) values('C',7000);  
+exit;
+insert into emp(ename,sal) values('D',8000);
+
+
+emp table
+empno ename  sal  
+----- -----  ----
+1     A      5000
+2     B      6000 
+3     C      7000
+
+MySQL - SQL - PRIVILEGES 
+Grant and revoke (DCL- data control language) 
+roo_mysql> grant select on cdacmumbai.emp to scott@localhost; cdacmumbai.emp--> schemaname.tablename *SCHEMA is a synonym for database
+roo_mysql> grant insert on cdacmumbai.emp to scott@localhost;
+roo_mysql> grant update on cdacmumbai.emp to scott@localhost;
+roo_mysql> grant delete on cdacmumbai.emp to scott@localhost;
+roo_mysql> grant all privileges on cdacmumbai.emp to scott@localhost;
+roo_mysql> grant select on cdacmumbai.emp to public; public -> all users
+roo_mysql> revoke select on cdacmumbai.emp from scott@localhost; 
+roo_mysql> grant select on cdacmumbai.emp to scott@localhost, king@localhost;
+
+
+select * from information_schema.table_privileges;
+
+if scott has db named usa
+use usa;
+select * from cdacmumbai.emp;
+insert into cdacmumbai.emp ....;
+update cdacmumbai.emp set ...;
+delete from cdacmumbai.emp where ...;
+
+create user amit@localhost identified by 'student';
+create user amit@'%' identified by 'student';
+create user amit@'d%' identified by 'student';
+grant all privileges on cdacmumbai.* to amit@localhost;
+grant all privileges on cdacmumbai.* to amit@'%';
+grant all privileges on cdacmumbai.* to amit@'d%';
+
+
+System tables 
+*MySQL created *automatically created when you install MySQL *78 system tables in MySQL v9. Set of system tables is AKA DATABASE CATALOG/DATABASE DICTIONARY. stored in information_schema
+* system tables store complete information about the database. eg statistics(for indexes), table_constraints, key_column_usage, table_privileges etc
+use information_schema;
+use tables; 
+
+data is of 2 types
+1.user data
+*user created * user tables and indexes
+2.system data
+*MySQL created * data is stored in system tables * also known as metadata(data about data)
+DBA-> DATABASE ADMINISTRATOR  * all system tables are READ_ONLY *DDL for user is DML for System tables *
+
+-------------------|----------------------     DB Server HDD machine name cdac.in. IP ->192.168.0.1
+  os               |MySQL DB server s/w         left side c: drive win 2008 server(NTFS new technology file system)
+     folders and   |cdacmumbai.emp              right side D: drive MySQL DB Server software(OFS oracle file system)
+   files(NTFS)     |pune.dept                   based on linux kernel 
+				   |usa.orders
+                   |indexes(data)
+                   |78 systables       
+-------------------|-----------------------    
+
+MySQL- Stored Objects
+* Objects that are stored in the database
+
+Views *present in all RDBMS and some DBMS also(foxpro,excel) 
+emp
+empno ename sal  deptno  user-> amit dbname-> cdacmumbai, other users- scott->usa,soham->pune 
+1     a     5000  1      *a view is a handle to a table. stores the address of the table. view is a HD pointer(stores address of the table) (known as locator)
+2     b     6000  1      * used for indirect access to the table. used for SECURITY PURPOSES.
+3     c     7000  1
+4     d     9000  2
+5     e     8000  2
+create view viewname...;  *command to create view
+amit_mysql> create view v1 as select empno,ename from emp; viewname tablename indexname have to be unique, 30 characters max
+
+root_mysql>  grant select on cdacmumbai.v1 to scott@localhost;
+scott_mysql> select * from cdacmumbai.emp; <- ERROR
+scott_mysql> select * from cdacmumbai.v1; internally runs the SELECT statement
+empno ename  *used to restrict the column access *view does not contain data, only the definition is stored, data is not stored. view is a stored query(stored in database)
+----- -----  *view speeds up the select statement. SELECT statement on which the view is based,it is stored in db in the compiled format. view is an executable format of SELECT statement.  
+1      a      hence execution will be very fast. hiding source code from end user. 
+2      b     *
+3      c
+4      d
+5      e
+grant select,insert on cdacmumbai.v1 to scott@localhost;
+scott_mysql> insert into cdacmumbai.v1 values(6,'f'); *dml operations can be performed on a view. 
+dml operations done on a view will affect the base table. constraints specified on the table will be enforced even when you insert via a the view
+
+amit_mysql> create view v1 as select empno,ename from emp;
+amit_mysql> drop view v1;
+
+v1=select empno,ename from emp1|  v2=select * from emp where deptno=1
+amit_mysql> amit_mysql> create view v2 as select * from emp where deptno=1; 
+select * from v2; used to restrict row access 
+insert into v2 values(6,'F',6000,2); <- Allowed
+amit_mysql> amit_mysql> create view v2 as select * from emp where deptno=1 with check option;
+insert into v2 values(6,'F',6000,2); <- ERROR   *views with check option is similar to check constraint
+*used to enforce different checks for different users 
+
+to change the SELECT statement of the view: 
+
+drop view v1;
+create view v1 as ...;
+
+create or replace view v1 as select ename, sal from emp;
+
+to find out which is a tabl and which is a view- show full tables;
+desc emp; desc v1;
+
+create or replace view v1 as select upper(ename) "u_ename",sal*12 "annual" from emp;
+select * from v1;
+
+* view based on computed column, expression, function, order by clause, group by clause, etc
+*you can SELECT from this view. dml operations are not allowed, common for all RDBMS. to see the SELECT statement on which the view is based
+show create view v1;
+v1=select ...;
+v2= select ...;
+
+* view based on view is allowed. uses -> a.UNION > 255 select statements b. subquery> 255 levels c. function within function> 255 levels
+d. simplify writing of complex SELECT statements eg join of 40 tables
+complex queries can be stored in view definition 

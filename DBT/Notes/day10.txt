@@ -1,0 +1,252 @@
+select * from emp;   ; is known as delimiter,indicates end of cmd. 
+
+MySQL - PL * used for db programming
+Oracle(PL/SQL) -> procedural language SQL (most popular language for commercial RDBMS 63%)
+MS SQL server (T-SQL) -> Transact SQL
+MySQL (MySQL-PL) -> MySQL Programming Language(most popular language for open-source RDBMS 42%)
+eg HRA_CALC, TAX_CALC, ATTENDANCE_CALC etc. *used for server-side data processing *program can be called in cli, workbench *few 4gl features(supports few oop features) 
+
+begin 
+insert into dept values(1,'a','B');
+end ** called a MySQL-PL block *block level language(block within block is possible)
+*benefits of block level language- a.modularity b.control scope of variables(form of data hiding- encapsulation) c.efficient error mgmt with help of exceptions
+*screen input and screen output is not allowed(scanf,printf not allowed )
+ONLY used for processing *can use SELECT statement inside the block but its not recommended
+*SQL commands that are allowed inside MySQL-> ddl, dml ,dql ,dtl/tcl. DCL commands are not allowed inside MySQL-PL program 
+delete from emp where deptno=(select deptno from emp where ename= 'Thomas');
+
+to store output of MySQL-PL program , create an output table
+create table tempp(
+fir int, 
+sec char(15));
+MySQL programs are written in the form of stored procedures
+STORED OBJECTS  * objects stored in the db * CREATE... tables,indexes, views *anything with CREATE cmd is a stored objects
+STORED PROCEDURES -> routine (set commands)that has called explicitly *global procedures *stored in db *can be called through MySQL cli, workbench,java,.NET *stored in db in COMPILED FORMAT
+* hence execution is very fast *hiding the source code  *execution takes place in server ram therefore it is ideally suited for server side data processing 
+* within the procedure you can have any processing, all MySQL-PL statements allowed eg IF statement, loops, cursors, etc. * one procedure can call another procedure *procedure can call itself
+*OVERLOADING OF STORED PROCEDURE IS NOT SUPPORTED; cannot create 2 or more procedures with same name even if NUMBER of parameters passed it different or datatype of parameters passed is different
+because its a stored objects
+
+TEMPP
+FIR SEC
+--- ---
+
+mysql> create procedure abc()
+begin
+insert into tempp values(1,'Hello');
+end;
+-->> read,compile,plan, and store it in the db in the compiled format.
+Procedure created.
+
+delimiter //
+mysql> create procedure abc()
+begin
+insert into tempp values(1,'Hello');
+end//
+
+mysql> call abc();
+mysql> select * from tempp;
+fir sec
+--- ---
+1   Hello
+mysql> commit;
+
+drop procedure abc;
+
+delimiter //
+create procedure abc()
+begin
+declare x int;
+set x=10;
+insert into tempp values(x,'inside abc');
+end;//
+delimiter ;   *in MySQL when you declare a variable, if u dont initialize it; then it will store a null values
+set x=10; <- ASSIGNMENT OPERATOR
+Procedure created;
+call abc();
+select * from tempp; *you can declare a variable and assign a value to it simultaneously. declare x int default 10;
+
+delimiter //
+create procedure abc()
+begin
+declare x char(15) default 'CDAC';
+insert into tempp values(1,x);
+end;//
+delimiter ;
+
+* for char, varchar , datetime use ' '
+
+mysql> delimiter //
+create procedure abc()
+begin 
+declare x char(15) default 'KING';
+declare y float default 3000;
+declare z float default 0.4;
+declare hra float;
+set hra=y*z;
+insert into tempp values(y,x);
+insert into tempp values(hra,'HRA');
+end;//
+delimiter ;
+int to float -> implicity datatype conversion
+float to int -> rounding takes place
+
+
+mysql> delimiter //
+create procedure abc(x char (15),y float, z float)
+begin 
+	declare hra float;
+	set hra=y*z;
+	insert into tempp values(y,x);
+	insert into tempp values(hra,'HRA');       for adding comments, /**/ multiline comment. comments are called internal documentation, must have a comment minimum every 2 statements
+end;//
+delimiter ;
+
+call abc('KING',3000,0.4);
+call abc('SCOTT',2500,0.3);        * to make it flexible, you can pass parameters to a procedure
+
+to see which procedures are created: show procedure status;
+show procedure status where db='cdacmumbai';
+show procedure status where name like 'a%';
+
+to view source code of stored procedure: show create procedure abc;
+
+root_mysql> grant execute on procedure cdacmumbai.abc to rohit@localhost; | revoke execute on procedure cdacmumbai.abc from rohit@localhost
+
+call cdacmumbai.abc();
+dbname.procedurename
+
+MySQL block, Begin...End, concept of tempp output table. create procedure declare vars initialize vars, default values for vars, processing eg hra_calc, pass parameters to make it flexible
+delimiter drop procedure 
+to change source code 
+drop procedure abc;
+
+create procedure abc()
+show procedure.. 
+show create procedure..
+grant execute/revoke execute
+remarks/comments
+
+
+emp 
+ename sal   job   deptno
+----- ---   ---   ------
+scott 3000  clerk   10
+king  5000  mgr     20
+
+
+delimiter //
+create procedure abc()
+begin 
+	declare x int;
+	select sal into x from emp
+	where ename = 'KING' ;
+	/* processing eg set hra=x*0.4 etc */
+	insert into tempp values(x,'KING');
+end;//
+delimiter ;        select <columnname> into <variablename> from <table> where....;
+
+delimiter //
+create procedure abc(y char(15))
+begin 
+	declare x int;
+	select sal into x from emp
+	where ename = 'KING' ;
+	/* processing eg set hra=x*0.4 etc */
+	insert into tempp values(x,y);
+end;//
+delimiter ; 
+
+call abc('King');
+call abc('Scott');    select <col1>,<col2>,<col3> into <var1>,<var2>,<var3> from <table> where...;
+
+delimiter//
+create procedure abc()
+begin 
+	declare x int; 
+	select sal into x from emp where ename ='KING';
+	if x> 4000 then 
+		insert into tempp values(x,'high sal');
+	elseif x<4000 
+		insert into tempp values(x,'low sal');
+	else 
+		insert into tempp values(x,'medium sal');
+		end if;
+end;//
+delimiter ;
+
+if <condition_is_satisfied> then ....;
+	..........;
+	..........;
+end if;
+* boolean is a logical datatype. if you have a boolean variable, then you can directly use the variablename by itself as a condition for IF statement
+
+delimiter//
+create procedure abc()
+begin 
+	declare x boolean default FALSE; 
+	if not x then 
+		insert into tempp values(1,'Delhi');
+end;//
+delimiter ;
+
+loops -> for repetitive/iterative processing
+while loop -> *check condition before entering the loop
+delimiter //
+create procedure abc()
+begin 
+	declare x int default 1;
+	while x<10 do 
+		insert into tempp values(x,'in while loop');
+		set x=x+1;                                     WARNING: if this line is commented/not written
+	end while;
+end;//
+delimiter;
+
+Repeat loop (similar to DO WHILE loop)
+repeat
+	..........;
+	..........;
+until expression_is_satisfied
+end repeat;
+
+delimiter //
+create procedure abc()
+begin 
+	declare x int default 1;
+	repeat 
+		insert into tempp values(x,'in loop');
+		set x=x+1;                                     WARNING: if this line is commented/not written
+	until x<5;
+	end while;
+end;//
+delimiter;
+
+
+Loop,Leave and Iterate Statements
+*leave statement allowes you to exit the loop similar to break statement of C programming. iterate statement allows to skip entire code under it and start new iteration(continue statement)
+*loop statement executes a block of code repeatedly with an additional flexibility of using a loop label
+
+delimiter//
+create procedure abc()
+begin 
+	declare x int default 1;
+	pq4_loop:loop
+		if x>10 then 
+			leave pqr_loop;
+		end if;
+		set x=x+1;
+		if mod(x,2)!=0 then 
+			iterate pqr_loop;
+		else 
+			insert into tempp values(x,'inside loop');
+		end if;
+	end;//
+delimiter ;
+
+in deeply nested, going from innermost loop to a point outside the outermost loop; leave would be the fastest way of doing it
+
+MySQL - Global variables
+mysql> set @x=10; <- remains in server RAM till you exit(end of session)
+mysql> select @x from dual; 10  *global variables can be used in SELECT, INSERT, UPDATE, DELETE statements and MySQL-PL programs also. can be used in frontend software also 
+set @y= 'CDAC'; set @z='2024-10-18';

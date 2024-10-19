@@ -1,0 +1,179 @@
+emp1
+empno ename
+1     a
+2     b
+3     c
+emp2
+empno ename
+1     a
+2     b
+4     d
+5     e
+
+MySQL-SQL-Set Operators
+*based on set theory. founder of rdbms is dr edgar codd.
+data-> intersection of row and column. mathematically speaking
+*structure of both SELECT statements has to be the same, number of columns in both and corresponding datatypes have to match.even the column names may be different
+*uses-> full outer join. combining 2 tables,3 tables etc. there is a limit of 255 tables
+select empno,ename from emp1
+union
+select empno,ename from emp2
+*ORDER BY clause has to be used after both SELECT statements. it is common for the final output(both the statements)
+empno ename
+----- -----
+1     a      union->will combine the output of both the select statements and it will suppress the duplicates
+2     b
+3     c
+4     d
+5     e
+select empno,ename from emp1
+union all
+select empno,ename from emp2; UNION ALL will combine the output of both the SELECT statements and the duplicates are not suppressed.
+
+select empno,ename from emp1
+intersect
+select empno,ename from emp2; *intersect will return the common values in both the SELECT statements and duplicates are suppressed
+
+select empno,ename from emp1
+except
+select empno,ename from emp2;*except will return what's present in first not present in second. and the duplicates are suppressed.in duplicate suppression sorting happens in server RAM
+empno ename
+----- -----
+3     c
+select ...........  * max upto 255 SELECT statements. this limit can be exceeded with the help of VIEWS.
+union
+select ...........
+intersect
+select ...........
+union all
+(select ...........
+except) 			*brackets- highest priority
+order by x;
+
+select job from emp where deptno=10
+intersect
+select job from emp where deptno=20;
+JOb
+---
+Manager
+Clerk		
+
+select job from emp where deptno=10 *recursion taking place in where clause which is used to make comparions.recursion is used for making comparisons
+except
+select job from emp where deptno=20;
+JOB
+---
+PRESIDENT
+
+PSEUDOCOLUMNS
+*fake columns AKA virtual columns. its not a column of the table but you can use it in select statements.
+a.computed columns(annual=sal*12)
+b.expressions(net_earnings=sal+comm-tax)
+c.function-based columns(avg_SAL=avg(dal),r_sal=round(sal,-3))
+
+ROWID is not a column of the table, it only shows the addresses of rows,it is the actual physical memory location, but it can be used in SELECT statements. it is a pseudocolumn	
+when you select from a table, the order of rows in the ouput depends on the row address, it will always be in ascending order or rowid
+*when you SELECT from a table, the order of rows in the output depends on the row address; it will always be in ascending order of rowid
+
+ROWID is a fixed -length encrypted string of 18 characters
+
+when you UPDATE a row, if the row length is decreasing, then the address(rowid) it will not change
+
+when you UPDATE a row, if the row length is increasing, and if free space is not available, then address(rowid) will change
+
+no 2 rows of any table in the entire db server hd can have the same rowid. rowid works as a UID for every row in the db.it is used to distinguish between 2 rows in the table
+
+you can use rowid to UPDATE or DELETE the duplicate rows
+
+
+rowid is used internally by MySQL for a. row locking b.to manage the indexes c.to manage the cursors d.to distinguish between 2 rows e. row mgmt 
+
+MySQL - Indexes
+			emp table					
+rowid		empno	ename	sal		deptno
+x0001		5		a		5000		1
+x0002		4		a		6000		1
+x0003		1		c		7000		1
+x0004		2		d		9000		2
+x0005		3		e		8000		2
+*indexes are present in all RDBMS, all dBMS, and some of the programming languages also. indexes are used to speed up the searching operations for faster access
+to speed up SELECT statement with a WHERE clause.
+
+*in MySQL, indexes are automatically invoked by the system as and when required. operations, indexes are automatically updated by the system for all DML operations. 
+duplicate values are stored in an index. no upper limit on number of indexes per table. larger the number of indexes, slower would be the DML operations. cannot index text and blob columns
+null values are not stored in an index.if you have 2 or more INDEPENDENT columns in WHERE clause, then create separate indexes for each column;MySql will use necessary indexes as and when required
+
+*COMPOISTE INDEX -> combine 2 or more INTERDEPENDENT columns together in a single index. 
+
+select * from emp where empno=1; if 100 million rows, full table scan. to make it work faster, create indexes
+ind_empno
+rowid empno  1.read 2.compile 3.plan 4.execute. execution plan-> plan created by MySQL as to how it will execute the SELECT statement.
+----- -----  other RDBMS -> insert/update/delete..; REINDEX;
+x0001 1      
+x0002 2
+x0003 3
+x0004 4
+x0005 5
+
+rowid deptno empno  deptno is primary index key empno is secondary index key
+----- ----- -------
+INDEX KEY-> column or set of columns on whose basis the index has been created
+in mysql, you can combine upto 32 columns in a composite index. 
+conditions where an index should be created * to speed up the SELECT statement with a WHERE clause * if SELECT retrieves <25% of table data
+
+select * from emp where empno=1;
+select * from emp where empno=5;
+select * from emp where empno<2;
+select * from emp where empno>1; <<----Not Recommended
+
+select * from emp where ename='A'; 
+select * from emp where empno>1;
+
+primary key column is the best column for searching. primary key and unique columns should always be indexed.
+*common columns in join operations should always be indexed 
+	dept 					
+rowid		deptno		dname		loc       select dname,ename from emp,dept
+-----       -------     --------    ---       where dept.deptno=emp.deptno; 1 from dept, full table scan for deptno=1 in emp table, return dname ename
+yo11		1			trn			bby
+yo12		2			exp			dlh
+yo13		3			mktg		cal
+
+			emp table					           index1                       index2
+rowid		empno	ename	sal		deptno         rowid         deptno     rowid    em
+x0001		5		a		5000		1          4011            1
+x0002		4		a		6000		1          4012            2
+x0003		1		c		7000		1          4013            3
+x0004		2		d		9000		2
+x0005		3		e		8000		2
+
+create index indexname on table(column); cmd to create an index
+
+create index i_emp_empno on emp(empno);
+create index i_emp_ename on emp(ename);
+create index i_emp_sal on emp(sal);
+
+select * from emp where empno=1
+
+show indexes from emp;
+too see all indexes on all tables in the database. use information_schema. select * from statistics
+create index i_emp_empno on emp(empno desc);
+
+create index i_emp_deptno_empno from emp(deptno, empno);
+create unique index i_emp_empno on emp(empno); <<---- performs 1 extra function, it wont allow the user to INSERT/UPDATE duplicate values in empno.
+at the time of creating the unique index, if you already have duplicate values in empno, then MySQL will not allow you to create the unique index
+*if you drop the table/column, then associated indexes are dropped automatically. *MySQL will not allow to create more than 1 index for same index
+
+TYPES OF INDEXES
+1.normal index 2.normal composite index 3.unique index 4.unique composite index 5.clustered index 6.non-clustered index 7.covering index 8.full-text index 9.filtered index 10. spatial index 
+11.xml index 12. hash index 13. bitmap index 14. index-organized table 15. table and index partitioning 16. global and local indexes 17. index on abstract columns 
+
+
+mysql> select min(sal) from(
+
+    -> select distinct sal from emp2
+
+    -> order by sal desc
+
+    -> limit 5)
+
+    -> as `lp`;
