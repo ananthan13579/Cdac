@@ -1,4 +1,4 @@
-Assignment 2
+Assignment 12
 Question 1
 Write a query that selects all customers whose ratings are equal to or greater than ANY of Serres’.
 mysql> select * from customers
