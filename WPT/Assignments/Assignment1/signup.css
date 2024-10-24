@@ -1,0 +1,45 @@
+body{
+	background-color:#9bd100;
+	font-family:'Roboto';
+}
+#container{
+	position:relative;
+	top:110px;
+	text-align:center;
+	border-color:black;
+	border-style:solid;
+	border-radius:40px;
+	width:500px;
+	height:500px;
+	margin:auto;
+	background-color:white;
+	
+}
+#container input[type="text"],input[type="password"]{
+	text-align:left;
+	font-size:20px;
+	background-color:#9bd100;
+	 outline:none;
+	 border-top: none;
+    border-left: none;
+    border-right: none;
+	padding-top: 16px;
+    padding-bottom: 16px;
+	font-family:'Roboto';
+	background-color:white;
+}
+#container input[type="submit"]{
+	width: 400px;
+    height: 50px;
+    font-family: 'Roboto';
+	font-size: 30px;
+    color: white;
+    background-color: black;
+	border-radius:30px;
+}
+#container input[type="submit"]:hover{
+	background:#9bd100;
+	color:black;
+}
+
+

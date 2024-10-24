@@ -1,0 +1,47 @@
+/*body {
+display: flex;
+flex-direction: column;
+gap: 24px;
+  }*/
+body{
+    background-color: #FEEE91;
+}
+  .d1{
+    font-size: 26px;
+    border: 0px;
+    margin:auto;
+    padding-bottom: 0%;
+    text-align: center;
+    background-color: #FF9D3D;
+    width: 25%;
+}
+#d2{
+    font-size: 16px;
+    border: 0px;
+    margin: 0px;
+    padding: 0%;
+    background-color: #FF9D3D;
+    
+    
+}
+#p1{
+    margin-top: 11px;
+    margin-bottom: 0px;
+    text-align: center;
+    font-size: 16px;
+}
+.ed,.sec,.sk,.lang{
+    text-align: center;
+    font-size: 16px;
+}
+p{
+    margin:0px;
+}
+#sum,#exphead,#edhead,#langhead,#skhead{
+    background-color: #FF9D3D;
+    margin:auto;
+    width: 7%;
+    height: 32px;
+    font-size: 20px;
+}
+

@@ -1,0 +1,39 @@
+body{
+	
+}
+*{
+	font-family:Roboto;
+}
+h2{
+	width-left:45%;
+	text-decoration:underline;
+	margin:0px;
+	
+	text-align:center;
+	color:#7E60BF;
+}
+#container{
+	width:600px;
+	height:600px;
+	margin:auto;
+	text-align:left;
+	color:white;
+	background-color:#7E60BF;
+}
+p{
+	margin:0px;
+	padding-left: 50px;
+    padding-top: 10px;
+	text-decoration:bold;
+}
+input {
+  display: inline-block;
+  float: center;
+}
+label{
+	margin:0px;
+	border-top:2px;
+	padding-left: 50px;
+    padding-top: 10px;
+	text-decoration:bold;
+}
