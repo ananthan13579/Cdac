@@ -1,0 +1,22 @@
+body{
+	background:darkcyan;
+}
+*{
+	font-family:'Roboto';
+	text-align:center;
+}
+.disappeared{
+	color:darkcyan;
+}
+span{
+	color:white;
+	font-weight:bold;
+}
+.heading{
+	width: 60%;
+    position: relative;
+    left: 300px;
+}
+h3{
+	margin:0;
+}
